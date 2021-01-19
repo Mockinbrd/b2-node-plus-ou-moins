@@ -6,15 +6,21 @@ class Request {
   }
 
   static processPostData(res, data) {
-    data = this.toJSON(data);
+    try {
+      data = this.toJSON(data);
+    } catch (error) {
+      return Promise.reject("JSON parsing error");
+    }
     if (typeof data["min"] !== "number" || typeof data["max"] !== "number") {
-      return res.writeHead(400, "Merci d'inserer uniquement des nombres.");
+      res.writeHead(400, "Merci d'inserer uniquement des nombres.");
+      return Promise.reject("Non-Numeric");
     }
     if (data["max"] - data["min"] < 5) {
-      return res.writeHead(
+      res.writeHead(
         400,
         "Merci d'inserer un nombre max superieur d'au moins 5 unites par rapport au nombre min."
       );
+      return Promise.reject("Numbers too close");
     }
     let jsonResponse = {
       min: data["min"],
@@ -24,7 +30,7 @@ class Request {
     res.write(
       `Nombres enregistrés :\n min:${data["min"]}\n max:${data["max"]}`
     );
-    return jsonResponse;
+    return Promise.resolve(jsonResponse);
   }
 
   static processPutData(data) {

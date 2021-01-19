@@ -45,9 +45,15 @@ const server = http.createServer((req, res) => {
       game.attempts = game.attempts++;
     });
     router.post("/party", function (req, res) {
-      Request.processPostData(res, data).then((json) => {
-        game = new Game(json["min"], json["max"], json["goodAnswer"]);
-      });
+      Promise(function (resolve, reject) {
+        Request.processPostData(res, data);
+      })
+        .then((json) => {
+          game = new Game(json["min"], json["max"], json["goodAnswer"]);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     });
     if (tempUserRes !== null) {
       game.isGoodAnswer(res, tempUserRes);
