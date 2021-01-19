@@ -18,7 +18,7 @@ const APP_PORT = 6880;
 
 const server = http.createServer((req, res) => {
   let router = new Routing(req, res);
-  let game;
+  let game = new Game();
   let data = "";
   let tempUserRes = null;
 
@@ -61,7 +61,7 @@ const server = http.createServer((req, res) => {
       })
         .then((json) => {
           console.log(json);
-          game = new Game(json["min"], json["max"], json["goodAnswer"]);
+          game.initGameValues(json["min"], json["max"], json["goodAnswer"]);
         })
         .catch((err) => {
           console.error(err);

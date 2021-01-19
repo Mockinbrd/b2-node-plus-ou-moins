@@ -56,6 +56,12 @@ class Game {
     this.attempts = value;
   }
 
+  initGameValues(min, max, goodAnswer) {
+    this.min = min;
+    this.max = max;
+    this.goodAnswer = goodAnswer;
+  }
+
   resetTemps() {
     this.attempts = 0;
     this.currentScores = [];
