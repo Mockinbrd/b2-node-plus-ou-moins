@@ -45,7 +45,6 @@ const server = http.createServer((req, res) => {
         Request.processPutData(data, resolve, reject);
       })
         .then((value) => {
-          console.log("cc");
           tempUserRes = value;
           game.attempts += 1;
           if (tempUserRes !== null) {
@@ -61,10 +60,8 @@ const server = http.createServer((req, res) => {
         Request.processPostData(res, data, resolve, reject);
       })
         .then((json) => {
+          console.log(json);
           game = new Game(json["min"], json["max"], json["goodAnswer"]);
-          /* game.min = json["min"];
-          game.max = json["max"];
-          game.goodAnswer = json["goodAnswer"]; */
         })
         .catch((err) => {
           console.error(err);
