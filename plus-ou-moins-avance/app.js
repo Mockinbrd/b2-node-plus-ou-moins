@@ -60,7 +60,6 @@ const server = http.createServer((req, res) => {
         Request.processPostData(res, data, resolve, reject);
       })
         .then((json) => {
-          console.log(json);
           game.initGameValues(json["min"], json["max"], json["goodAnswer"]);
         })
         .catch((err) => {
