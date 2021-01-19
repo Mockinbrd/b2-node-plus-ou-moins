@@ -34,7 +34,12 @@ class Request {
   }
 
   static processPutData(data) {
-    return parseInt(data);
+    try {
+      let res = parseInt(data);
+      return Promise.resolve(res);
+    } catch (error) {
+      return Promise.reject("Could not parse data");
+    }
   }
 }
 
