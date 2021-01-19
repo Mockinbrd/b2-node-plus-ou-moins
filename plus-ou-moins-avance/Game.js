@@ -20,8 +20,8 @@ class Game {
     this.max = value;
   }
 
-  get min() {
-    return this.min;
+  get max() {
+    return this.max;
   }
 
   get scoresBoard() {

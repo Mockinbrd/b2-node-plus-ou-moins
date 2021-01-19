@@ -18,7 +18,7 @@ const APP_PORT = 6880;
 
 const server = http.createServer((req, res) => {
   let router = new Routing(req, res);
-  let game = new Game();
+  let game;
   let data = "";
   let tempUserRes = null;
 
@@ -42,11 +42,15 @@ const server = http.createServer((req, res) => {
   req.on("end", () => {
     router.put("/party/current", function (req, res) {
       let p = new Promise(function (resolve, reject) {
-        Request.processPutData(data);
+        Request.processPutData(data, resolve, reject);
       })
         .then((value) => {
+          console.log("cc");
           tempUserRes = value;
-          game.attempts = game.attempts++;
+          game.attempts += 1;
+          if (tempUserRes !== null) {
+            game.isGoodAnswer(res, tempUserRes);
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -54,20 +58,18 @@ const server = http.createServer((req, res) => {
     });
     router.post("/party", function (req, res) {
       let p = new Promise(function (resolve, reject) {
-        Request.processPostData(res, data);
+        Request.processPostData(res, data, resolve, reject);
       })
         .then((json) => {
-          game.min = json["min"];
+          game = new Game(json["min"], json["max"], json["goodAnswer"]);
+          /* game.min = json["min"];
           game.max = json["max"];
-          game.goodAnswer = json["goodAnswer"];
+          game.goodAnswer = json["goodAnswer"]; */
         })
         .catch((err) => {
           console.error(err);
         });
     });
-    if (tempUserRes !== null) {
-      game.isGoodAnswer(res, tempUserRes);
-    }
     return res.end();
   });
 });
