@@ -45,7 +45,7 @@ const server = http.createServer((req, res) => {
       game.attempts = game.attempts++;
     });
     router.post("/party", function (req, res) {
-      Promise(function (resolve, reject) {
+      let p = new Promise(function (resolve, reject) {
         Request.processPostData(res, data);
       })
         .then((json) => {
